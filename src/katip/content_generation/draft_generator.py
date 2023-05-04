@@ -13,4 +13,5 @@ class DraftGenerator:
             abstract,
             draft_protocol, 
             BasicPrompts.draft_task, 
+            BasicPrompts.additional_text_instructions,
             "title")

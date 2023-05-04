@@ -1,4 +1,5 @@
 from katip.prompting.protocol_handler import ProtocolHandler
+from katip.prompting.basic_prompts import BasicPrompts
 import os
 import json
 
@@ -13,6 +14,7 @@ class Elaborator:
             context,
             paragraph_protocol,
             "Add more content and elaborate the given paragraph (but retain the main ideas)",
+            BasicPrompts.additional_text_instructions,
             "text", paragraph)
     
     def elaborate_abstract(self, abstract):
@@ -23,4 +25,5 @@ class Elaborator:
             abstract,
             abstract_protocol, 
             "Add more content and elaborate the abstract",
+            BasicPrompts.additional_text_instructions,
             "title")["abstract"]

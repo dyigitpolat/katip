@@ -22,6 +22,7 @@ class BodyGenerator:
             context, protocol_dict, 
             BasicPrompts.section_body_task_template.format(
                 section_name=section["name"]), 
+            BasicPrompts.additional_text_instructions,
             "paragraph_name", completion_dict
         )
     
@@ -37,6 +38,7 @@ class BodyGenerator:
             context, protocol_dict, 
             BasicPrompts.subsection_body_task_template.format(
                 section_name=section["name"], subsection_name=subsection["name"]), 
+            BasicPrompts.additional_text_instructions,
             "paragraph_name", completion_dict
         )
         

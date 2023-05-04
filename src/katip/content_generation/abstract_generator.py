@@ -1,4 +1,5 @@
 from katip.prompting.protocol_handler import ProtocolHandler
+from katip.prompting.basic_prompts import BasicPrompts
 
 import json
 import os
@@ -12,4 +13,5 @@ class AbstractGenerator:
             context,
             abstract_protocol, 
             "Write an abstract for the scientific paper explained above", 
+            BasicPrompts.additional_text_instructions,
             "title")["abstract"]
