@@ -27,9 +27,10 @@ class ProtocolHandler:
                 prompt += f"{BasicPrompts.prefix_introducer}{prefix}"
 
                 json_str :str = prefix + OpenAIClient().respond(prompt)
-                json_str = json_str.replace("\n", "")
-                json_str = json_str.replace("\t", "")
-                json_str = json_str.replace("\r", "")
+                json_str = json_str.replace("\n", " ")
+                json_str = json_str.replace("\t", " ")
+                json_str = json_str.replace("\r", " ")
+                json_str = json_str.replace("  ", " ").replace("  ", " ")
             
                 try:
                     json_str_final = json_str[:json_str.rfind("}") + 1]
