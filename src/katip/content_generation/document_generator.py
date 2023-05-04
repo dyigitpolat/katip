@@ -6,9 +6,12 @@ import threading
 
 class DocumentGenerator:
     def _elaborate_paragraph(self, paragraphs, idx, abstract, paragraph):
+        print("elaborating paragraph:", paragraph["paragraph_name"])
         paragraphs[idx] = Elaborator().elaborate(abstract, paragraph)
+        print("elaborated paragraph:", paragraph["paragraph_name"])
 
     def _generate_subsection(self, abstract, subsections, section, subsection, j):
+        print("generating subsection", subsection["name"], "of", section["name"])
         subsections[j] = BodyGenerator().generate_subsection_body(abstract, section, subsection)
 
         threads = []
@@ -20,9 +23,12 @@ class DocumentGenerator:
         
         for thread in threads:
             thread.join()
+        
+        print("generated subsection", subsection["name"], "of", section["name"])
 
 
     def _generate_section(self, abstract, sections, section, i):
+        print("generating section", section["name"])
         sections[i] = BodyGenerator().generate_section_body(abstract, section)
             
         subsections = sections[i]["subsections"]
@@ -45,8 +51,11 @@ class DocumentGenerator:
         for thread in threads:
             thread.join()
 
+        print("generated section", section["name"])
+
 
     def generate_from_abstract(self, abstract):
+        print("generating draft...")
         document_dict = DraftGenerator().generate_from_abstract(abstract)
 
         sections = document_dict["sections"]
