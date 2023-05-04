@@ -162,3 +162,5 @@ cython_debug/
 .vscode
 generated
 api_keys.py
+
+input.txt

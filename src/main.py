@@ -5,12 +5,17 @@ from katip.renderers.basic_latex_renderer import BasicLatexRenderer
 
 import json
 import os
+import sys
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     os.makedirs("../generated", exist_ok=True)
 
-    context = input("provide context: _")
+    if len(sys.argv) < 2:
+        context = input("provide context: _")
+    else:
+        context = open(sys.argv[1]).read()
+        
     abstract = AbstractGenerator().generate_abstract(context)
     abstract = Elaborator().elaborate_abstract(abstract)
 
