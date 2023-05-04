@@ -31,8 +31,8 @@ class BodyGenerator:
         protocol_dict = json.load(open(protocol_path))
         
         completion_dict = dict(protocol_dict)
-        completion_dict["name"] = section["name"]
-        completion_dict["summary"] = section["summary"]
+        completion_dict["name"] = subsection["name"]
+        completion_dict["summary"] = subsection["summary"]
 
         return ProtocolHandler().get_structured_completion(
             context, protocol_dict, 
