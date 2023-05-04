@@ -7,12 +7,13 @@ class Elaborator:
         protocol_path = os.getcwd() + "/katip/protocols/paragraph.json"
         paragraph_protocol = json.load(open(protocol_path))
 
-        context += "\n\n" + json.dumps(paragraph, indent=2)
-        return ProtocolHandler().get_structured_response(
+        context += f"\n\nGiven paragraph:\n{paragraph['paragraph_name']}: {paragraph['text']}"
+
+        return ProtocolHandler().get_structured_completion(
             context,
             paragraph_protocol,
             "Add more content and elaborate the given paragraph (but retain the main ideas)",
-            "paragraph_name")
+            "text", paragraph)
     
     def elaborate_abstract(self, abstract):
         protocol_path = os.getcwd() + "/katip/protocols/abstract.json"

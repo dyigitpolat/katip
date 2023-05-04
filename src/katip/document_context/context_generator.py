@@ -1,0 +1,2 @@
+class ContextGenerator:
+    pass
