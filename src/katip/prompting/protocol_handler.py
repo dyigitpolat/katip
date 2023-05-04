@@ -3,7 +3,7 @@ from katip.prompting.basic_prompts import BasicPrompts
 import json
 
 class ProtocolHandler:
-    max_tries = 3
+    max_tries = 5
 
     def _get_prefix(self, json_str: str, prefix_key):
         prefix_index = json_str.find(f"\"{prefix_key}\"")
