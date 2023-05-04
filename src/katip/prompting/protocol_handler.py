@@ -14,7 +14,7 @@ class ProtocolHandler:
     def get_structured_response(self, context, json_protocol_dict, task, prefix_key):
         for trial in range(ProtocolHandler.max_tries):
             try:
-                protocol_string = json.dumps(json_protocol_dict)
+                protocol_string = json.dumps(json_protocol_dict, indent=2)
                 prefix = self._get_prefix(protocol_string, prefix_key)
                 prompt = f"""{context}\n\n{task} {BasicPrompts.json_introducer} {protocol_string}"""
                 prompt += f"{BasicPrompts.prefix_introducer}{prefix}"
