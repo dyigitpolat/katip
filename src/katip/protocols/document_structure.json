@@ -7,7 +7,7 @@
             "subsections" : [
                 {
                     "name" : "subsection name",
-                    "summary" : "main points of the subsection in one or two sentences. Refer to other work and experiments as much as possible. To cite, always use the syntax ((citation needed: <put meaningful keywords here to find relevant studies on semantic scholar>)). to refer to experiments and results, always use the syntax ((result needed: <put a short description of the required experiment here>)). Refer to other work and experiments as much as possible using our special syntax."
+                    "summary" : "there may be important subsections in a section. here, put main points of the subsection in one or two sentences. Refer to other work and experiments as much as possible. To cite, always use the syntax ((citation needed: <put meaningful keywords here to find relevant studies on semantic scholar>)). to refer to experiments and results, always use the syntax ((result needed: <put a short description of the required experiment here>)). Refer to other work and experiments as much as possible using our special syntax."
                 }
             ]
         }
