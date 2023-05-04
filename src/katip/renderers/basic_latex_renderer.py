@@ -19,6 +19,14 @@ f"""
 \\maketitle
 """
 
+    def _make_abstract(self, abstract):
+        return \
+f"""
+\\begin{{abstract}}
+{self._L(abstract)}
+\\end{{abstract}}
+"""
+
     def _L(self, text):
         latex_source = text
 
@@ -30,9 +38,10 @@ f"""
         return latex_source
 
 
-    def render(self, document_dict, author):
+    def render(self, document_dict, abstract, author):
         latex_source = BasicLatexRenderer.latex_prefix
         latex_source += self._make_title(document_dict["title"], author)
+        latex_source += self._make_abstract(abstract)
 
         sections = document_dict["sections"]
         for i, section in enumerate(sections):
