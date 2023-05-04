@@ -4,7 +4,7 @@
     "body" : {
         "paragraphs" : [
             {
-                "paragraph_name" : "descriptive name for this paragraph",
+                "paragraph_name" : "descriptive name for this paragraph, be exclusively specific to the content.",
                 "text" : "this is a paragraph in the subsection."
             }
         ]

@@ -15,14 +15,18 @@ class DocumentGenerator:
         subsections[j] = BodyGenerator().generate_subsection_body(abstract, section, subsection)
 
         threads = []
+        paragraph_dict = {}
         subsection_paragraphs = subsections[j]["body"]["paragraphs"]
         for k, paragraph in enumerate(subsection_paragraphs):
-            thread = threading.Thread(target=self._elaborate_paragraph, args=(subsection_paragraphs, k, abstract, paragraph))
+            thread = threading.Thread(target=self._elaborate_paragraph, args=(paragraph_dict, int(k), abstract, paragraph))
             thread.start()
             threads.append(thread)
         
         for thread in threads:
             thread.join()
+
+        for k, paragraph in enumerate(subsection_paragraphs):
+            subsection_paragraphs[j] = paragraph_dict[j]
         
         print("generated subsection", subsection["name"], "of", section["name"])
 
@@ -32,24 +36,32 @@ class DocumentGenerator:
         sections[i] = BodyGenerator().generate_section_body(abstract, section)
             
         subsections = sections[i]["subsections"]
+        subsections_dict = {}
         threads = []
         for j, subsection in enumerate(subsections):
-            thread = threading.Thread(target=self._generate_subsection, args=(abstract, subsections, section, subsection, j))
+            thread = threading.Thread(target=self._generate_subsection, args=(abstract, subsections_dict, section, subsection, int(j)))
             thread.start()
             threads.append(thread)
         
         for thread in threads:
             thread.join()
+
+        for j, subsection in enumerate(subsections):
+            subsections[j] = subsections_dict[j]
         
         threads = []
+        paragraph_dict = {}
         section_paragraphs = sections[i]["intro_or_body"]["paragraphs"]
         for j, paragraph in enumerate(section_paragraphs):
-            thread = threading.Thread(target=self._elaborate_paragraph, args=(section_paragraphs, j, abstract, paragraph))
+            thread = threading.Thread(target=self._elaborate_paragraph, args=(paragraph_dict, int(j), abstract, paragraph))
             thread.start()
             threads.append(thread)
         
         for thread in threads:
             thread.join()
+
+        for j, paragraph in enumerate(section_paragraphs):
+            section_paragraphs[j] = paragraph_dict[j]
 
         print("generated section", section["name"])
 
@@ -59,13 +71,17 @@ class DocumentGenerator:
         document_dict = DraftGenerator().generate_from_abstract(abstract)
 
         sections = document_dict["sections"]
+        sections_dict = {}
         threads = []
         for i, section in enumerate(sections):
-            thread = threading.Thread(target=self._generate_section, args=(abstract, sections, section, i))
+            thread = threading.Thread(target=self._generate_section, args=(abstract, sections_dict, section, int(i)))
             thread.start()
             threads.append(thread)
         
         for thread in threads:
             thread.join()
+
+        for i, section in enumerate(sections):
+            sections[i] = sections_dict[i]
 
         return document_dict

@@ -10,8 +10,8 @@
     "intro_or_body" : {
         "paragraphs" : [
             {
-                "paragraph_name" : "descriptive name for this paragraph",
-                "text" : "this is a paragraph in the section."
+                "paragraph_name" : "descriptive name for this paragraph, be exclusively specific to the content.",
+                "text" : "this is a paragraph in the section. do NOT cover what is going to be covered in the subsections above."
             }
         ]
     }

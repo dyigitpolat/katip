@@ -29,6 +29,9 @@ class BodyGenerator:
     def generate_subsection_body(self, context, section, subsection):
         protocol_path = os.getcwd() + "/katip/protocols/subsection_details.json"
         protocol_dict = json.load(open(protocol_path))
+
+        context += f"\n\nSection: {section['name']}"
+        context += f"\nSection Summary: {section['summary']}\n"
         
         completion_dict = dict(protocol_dict)
         completion_dict["name"] = subsection["name"]
