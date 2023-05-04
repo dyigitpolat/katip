@@ -34,11 +34,9 @@ class ProtocolHandler:
             
                 try:
                     json_str_final = json_str[:json_str.rfind("}") + 1]
-                    print("JSON STR FINAL 1", json_str_final)
                     return json.loads(json_str_final)
                 except:
                     json_str_final = json_str + "\"}"
-                    print("JSON STR FINAL 2", json_str_final)
                     return json.loads(json_str_final)
                 
             except:

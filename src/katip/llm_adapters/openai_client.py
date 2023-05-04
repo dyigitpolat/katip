@@ -22,7 +22,8 @@ class OpenAIClient:
         self.system_prompt = system_prompt
 
     def _report(self, key, value):
-        print(f"{key}: {value}\n")
+        #print(f"{key}: {value}\n")
+        pass
 
     def respond(self, text):
         self._report("OpenAI System Prompt", self.system_prompt)
