@@ -1,3 +1,4 @@
+from katip.content_generation.abstract_generator import AbstractGenerator
 from katip.content_generation.draft_generator import DraftGenerator
 from katip.content_generation.body_generator import BodyGenerator 
 from katip.content_generation.elaborator import Elaborator 
@@ -51,7 +52,7 @@ class DocumentGenerator:
         
         threads = []
         paragraph_dict = {}
-        section_paragraphs = sections[i]["intro_or_body"]["paragraphs"]
+        section_paragraphs = sections[i]["body"]["paragraphs"]
         for j, paragraph in enumerate(section_paragraphs):
             thread = threading.Thread(target=self._elaborate_paragraph, args=(paragraph_dict, int(j), abstract, paragraph))
             thread.start()
@@ -64,17 +65,32 @@ class DocumentGenerator:
             section_paragraphs[j] = paragraph_dict[j]
 
         print("generated section", section["name"])
+    
 
+    def generate(self, user_context):
+        print("generating abstract...")
+        abstract = AbstractGenerator().generate_abstract(user_context)
 
-    def generate_from_abstract(self, abstract):
+        print("elaborating abstract...")
+        abstract = Elaborator().elaborate_abstract(abstract)
+
         print("generating draft...")
         document_dict = DraftGenerator().generate_from_abstract(abstract)
+
+        document_structure_context = "The paper is structured as follows: \n"
+        for section in document_dict["sections"]:
+            document_structure_context += section["name"] + "("
+            for subsection in section["subsections"]:
+                document_structure_context += subsection["name"] + ", "
+            document_structure_context = document_structure_context[:-2] + ") \n"
+
+        section_context = user_context + "\n\nAbstract: " + abstract + "\n\n" + document_structure_context
 
         sections = document_dict["sections"]
         sections_dict = {}
         threads = []
         for i, section in enumerate(sections):
-            thread = threading.Thread(target=self._generate_section, args=(abstract, sections_dict, section, int(i)))
+            thread = threading.Thread(target=self._generate_section, args=(section_context, sections_dict, section, int(i)))
             thread.start()
             threads.append(thread)
         
@@ -84,4 +100,7 @@ class DocumentGenerator:
         for i, section in enumerate(sections):
             sections[i] = sections_dict[i]
 
+        document_dict["abstract"] = abstract
         return document_dict
+        
+

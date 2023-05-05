@@ -1,3 +1,5 @@
+import re
+
 class BasicLatexRenderer:
     latex_prefix = \
 """
@@ -36,11 +38,29 @@ f"""
             latex_source = latex_source.replace(character, '\\' + character)
 
         return latex_source
+    
+    def _make_references(self, latex_source):
+        references = "\n\\section{{References}}\n"
+        matches = re.findall(r'\(citation\\_needed:.*?\)', latex_source)
+        for match in matches:
+            references += f"{match} \\\\ \n"
+        
+        return references
+    
+    def _make_results(self, latex_source):
+        results = "\n\\section{{Results}}\n"
+        matches = re.findall(r'\(result\\_needed:.*?\)', latex_source)
+        for match in matches:
+            results += f"{match} \\\\ \n"
+        
+        return results
 
 
-    def render(self, document_dict, abstract, author):
+    def render(self, document_dict, author):
         latex_source = BasicLatexRenderer.latex_prefix
         latex_source += self._make_title(document_dict["title"], author)
+        
+        abstract = document_dict["abstract"]
         latex_source += self._make_abstract(abstract)
 
         sections = document_dict["sections"]
@@ -56,11 +76,13 @@ f"""
                     latex_source += f"\\paragraph{{{self._L(paragraph['paragraph_name'])}}}\n"
                     latex_source += f"{self._L(paragraph['text'])}\n"
             
-            section_paragraphs = sections[i]["intro_or_body"]["paragraphs"]
+            section_paragraphs = sections[i]["body"]["paragraphs"]
             for j, paragraph in enumerate(section_paragraphs):
                 latex_source += f"\\paragraph{{{self._L(paragraph['paragraph_name'])}}}\n"
                 latex_source += f"{self._L(paragraph['text'])}\n"
 
+        latex_source += self._make_references(latex_source)
+        latex_source += self._make_results(latex_source)
         latex_source += BasicLatexRenderer.latex_suffix
 
         return latex_source
