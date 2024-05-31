@@ -11,7 +11,7 @@ from tenacity import (
 
 @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
 def completion_with_backoff(**kwargs):
-    return openai.ChatCompletion.create(**kwargs)
+    return openai.chat.completions.create(**kwargs)
 
 class OpenAIClient:
     def __init__(self, model="gpt-3.5-turbo", system_prompt=""):
