@@ -1,5 +1,4 @@
 import api_keys
-
 import openai
 import random
 
@@ -14,7 +13,7 @@ def completion_with_backoff(**kwargs):
     return openai.chat.completions.create(**kwargs)
 
 class OpenAIClient:
-    def __init__(self, model="gpt-3.5-turbo", system_prompt=""):
+    def __init__(self, model="gpt-3.5-turbo", system_prompt="", api_key=None):
         openai.organization = "org-YyEX4wI80xFZTZY6IjsS59V5"
         openai.api_key = api_keys.openai_api_key
 
