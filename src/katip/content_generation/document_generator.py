@@ -80,8 +80,9 @@ class DocumentGenerator:
         document_structure_context = "The paper is structured as follows: \n"
         for section in document_dict["sections"]:
             document_structure_context += section["name"] + "("
-            for subsection in section["subsections"]:
-                document_structure_context += subsection["name"] + ", "
+            if "subsections" in section:
+                for subsection in section["subsections"]:
+                    document_structure_context += subsection["name"] + ", "
             document_structure_context = document_structure_context[:-2] + ") \n"
 
         section_context = user_context + "\n\nAbstract: " + abstract + "\n\n" + document_structure_context
