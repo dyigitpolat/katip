@@ -11,5 +11,7 @@ COPY . /katip
 RUN pip3 install -r requirements.txt
 RUN chmod 777 start.sh
 
+EXPOSE 8000
+
 # Run app.py when the container launches
 CMD ./start.sh
