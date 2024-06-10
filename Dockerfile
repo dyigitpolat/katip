@@ -8,8 +8,6 @@ WORKDIR /katip
 COPY . /katip
 
 # Update Ubuntu and install Python
-RUN python3 -m venv env
-RUN source env/bin/activate
 RUN pip3 install -r requirements.txt
 
 # Run app.py when the container launches
