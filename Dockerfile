@@ -9,6 +9,7 @@ COPY . /katip
 
 # Update Ubuntu and install Python
 RUN pip3 install -r requirements.txt
+RUN chmod 777 start.sh
 
 # Run app.py when the container launches
-CMD ["sh", "-c", "start.sh"]
+CMD ./start.sh
