@@ -1,8 +1,5 @@
 # Use an official Ubuntu as a parent image
-FROM ubuntu:latest
-
-# Update Ubuntu and install Python
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
+FROM python:3.12-bullseye
 
 # Set the working directory in the container
 WORKDIR /katip
