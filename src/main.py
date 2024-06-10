@@ -1,5 +1,3 @@
-from katip.content_generation.abstract_generator import AbstractGenerator
-from katip.content_generation.elaborator import Elaborator
 from katip.content_generation.document_generator import DocumentGenerator
 from katip.renderers.basic_latex_renderer import BasicLatexRenderer
 
