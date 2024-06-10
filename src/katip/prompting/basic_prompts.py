@@ -5,4 +5,4 @@ class BasicPrompts:
     section_body_task_template = """Provide a fully detailed body for the "{section_name}" section (stay strictly within the section scope of "{section_name}")"""
     subsection_body_task_template = """Provide a fully detailed body for the "{subsection_name}" subsection of the "{section_name}" section (stay strictly within the subsection scope of "{subsection_name}")"""
     additional_text_instructions = \
-"""Refer to other work and experiments as much as possible. Always use the syntax ((result_needed: <short description of experiment>)) for referring to experiments and results. Always use the syntax ((citation_needed: <keywords and topics about relevant work, without author names>)) for referring to other work. """
+"""Refer to other work and experiments as much as possible. Always use the syntax ((result_needed: <short description of experiment>)) for referring to experiments and results. Always use the syntax ((citation_needed: <detailed and specific search query with sufficient context for relevant work, without author names>)) for referring to other work. Do this for every sentence."""
