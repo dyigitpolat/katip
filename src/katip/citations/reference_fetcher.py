@@ -3,7 +3,15 @@ import requests
 import json
 import re
 import time
+import threading
 
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_random_exponential,
+)  # for exponential backoff
+
+@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
 def fetch_papers_semantic_scholar(query, max_results=3):
     # URL for Semantic Scholar API
     url = 'https://api.semanticscholar.org/graph/v1/paper/search'
@@ -25,8 +33,7 @@ def fetch_papers_semantic_scholar(query, max_results=3):
         print("Failed to fetch data from Semantic Scholar.")
         print(f"Status code: {response.status_code}")
         #sleep for 1 second and try again
-        time.sleep(1)
-        return fetch_papers_semantic_scholar(query, max_results)
+        raise Exception("Failed to fetch data from Semantic Scholar.") 
     
     # Parse the JSON response
     data = response.json()
@@ -42,12 +49,36 @@ def fetch_papers_semantic_scholar(query, max_results=3):
     
     return papers
 
+def add_to_map(papers_map, query, max_results=3):
+    papers = fetch_papers_semantic_scholar(query, max_results)
+    papers_map[query] = papers
+
+def fetch_papers_map_semantic_scholar(queries, max_results=3):
+    # asynchroneously fetch papers for each query with threading
+    papers_map = {}
+    threads = []
+    for query in queries:
+        thread = threading.Thread(target=add_to_map, args=(papers_map, query, max_results))
+        thread.start()
+        threads.append(thread)
+    
+    for thread in threads:
+        thread.join()
+
+    return papers_map
+
 def find_references_in_document_dict(document_dict):
     # first convert document dict to json and then find the syntax ((citation_needed: ...)) and ((result_needed: ...))
     # for each match, query with ... part and replace the ... part with the fetched paper title and url
 
     # convert document_dict to json
     document_json = json.dumps(document_dict)
+    matches = re.findall(r'\(citation_needed:.*?\)', document_json)
+    queries = [match[18:-1] for match in matches]
+    matches = re.findall(r'\(result_needed:.*?\)', document_json)
+    queries += [match[16:-1] for match in matches]
+    
+    papers_map = fetch_papers_map_semantic_scholar(queries)
     
     # find the syntax ((citation_needed: ...)) and ((result_needed: ...))
     prefix = '((citation_needed: '
@@ -55,7 +86,7 @@ def find_references_in_document_dict(document_dict):
     while i != -1:
         j = document_json.find(')', i)
         query = document_json[i+len(prefix):j]
-        papers = fetch_papers_semantic_scholar(query)
+        papers = papers_map[query]
         str_papers = f"((citation: "
 
         if len(papers) == 0:
@@ -75,7 +106,7 @@ def find_references_in_document_dict(document_dict):
     while i != -1:
         j = document_json.find(')', i)
         query = document_json[i+len(prefix):j]
-        papers = fetch_papers_semantic_scholar(query)
+        papers = papers_map[query]
         str_papers = f"((result: "
 
         if len(papers) == 0:
