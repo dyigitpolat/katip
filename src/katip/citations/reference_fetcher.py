@@ -11,7 +11,7 @@ from tenacity import (
     wait_random_exponential,
 )  # for exponential backoff
 
-@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
+@retry(wait=wait_random_exponential(min=1, max=60))
 def fetch_papers_semantic_scholar(query, max_results=3):
     # URL for Semantic Scholar API
     url = 'https://api.semanticscholar.org/graph/v1/paper/search'
