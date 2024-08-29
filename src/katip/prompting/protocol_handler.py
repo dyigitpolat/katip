@@ -24,16 +24,16 @@ class ProtocolHandler:
 
                 completion_string = json.dumps(completion_dict, indent=2)
                 prefix = self._get_prefix(completion_string, prefix_key)
-                prompt += f"{BasicPrompts.prefix_introducer}{prefix}"
+                prompt += f"{BasicPrompts.prefix_introducer}{prefix}...{BasicPrompts.prompt_finalizer}"
 
-                json_str :str = prefix + OpenAIClient().respond(prompt)
+                json_str = OpenAIClient().respond(prompt)
                 json_str = json_str.replace("\n", " ")
                 json_str = json_str.replace("\t", " ")
                 json_str = json_str.replace("\r", " ")
                 json_str = json_str.replace("  ", " ").replace("  ", " ")
             
                 try:
-                    json_str_final = json_str[:json_str.rfind("}") + 1]
+                    json_str_final = json_str[json_str.find("{"):json_str.rfind("}") + 1]
                     return json.loads(json_str_final)
                 except:
                     json_str_final = json_str + "\"}"
